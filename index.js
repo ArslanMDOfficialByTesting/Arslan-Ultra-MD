@@ -225,4 +225,3 @@ if (!isReact && senderNumber === botNumber) {
   setTimeout(() => {
   connectToWA()
   }, 4000);  
-  
