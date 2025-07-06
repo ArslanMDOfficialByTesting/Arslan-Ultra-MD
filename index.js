@@ -221,7 +221,7 @@ if (config.AUTO_STATUS_REPLY === "true") {
     react: { text: '💜', key: mek.key } 
   }, { quoted: mek });
     }
-  
+}
 
 //owner react
 
@@ -259,7 +259,6 @@ if (!isReact && senderNumber === botNumber) {
   }
 } 
   //============================================================================ 
-  
   })
   }
   app.get("/", (req, res) => {
