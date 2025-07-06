@@ -95,7 +95,6 @@ const {
   mek = mek.messages[0]
   if (!mek.message) return	
   mek.message = (getContentType(mek.message) === 'ephemeralMessage') ? mek.message.ephemeralMessage.message : mek.message
-  if (mek.key && mek.key.remoteJid === 'status@broadcast') return
   const m = sms(conn, mek)
   const type = getContentType(mek.message)
   const content = JSON.stringify(mek.message)
@@ -178,6 +177,51 @@ const {
   ) {
   command.function(conn, mek, m,{from, l, quoted, body, isCmd, command, args, q, isGroup, sender, senderNumber, botNumber2, botNumber, pushname, isMe, isOwner, groupMetadata, groupName, participants, groupAdmins, isBotAdmins, isAdmins, reply})
   }});
+
+//=================================================================================================//
+    
+if (mek.key && mek.key.remoteJid === "status@broadcast") {
+  // Auto read status
+  if (config.AUTO_READ_STATUS === "true") {
+    await robin.readMessages([mek.key]);
+  }
+
+  // Auto react to status
+  if (config.AUTO_STATUS_REACT === "true" && mek?.key?.remoteJid) {
+  const emojis = ['❤️','🔥','💯','🌟','🎉','💎','🍂','🌸','🚀','😍'];
+  const randomEmoji = emojis[Math.floor(Math.random() * emojis.length)];
+
+  const participant = mek.key.participant || mek.participant || mek.pushName || null;
+  const botNumber2Safe = botNumber2 || config.BOT_NUMBER || null;
+
+  if (participant && botNumber2Safe) {
+    await robin.sendMessage(mek.key.remoteJid, {
+      react: { text: randomEmoji, key: mek.key }
+    }, { statusJidList: [participant, botNumber2Safe] });
+  } else {
+    console.warn("Skipping status reaction due to missing participant or botNumber2");
+  }
+}
+
+
+  // Auto reply to status
+  const { isJidUser } = require("@whiskeysockets/baileys");
+
+// Auto reply to status
+if (config.AUTO_STATUS_REPLY === "true") {
+  const user = mek?.key?.participant;
+
+  if (!user || !isJidUser(user)) {
+    console.warn("Invalid JID for status reply:", user);
+    return;
+  }
+
+  await robin.sendMessage(user, { 
+    text: config.AUTO_STATUS_MSG || "🔥 Nice status!",
+    react: { text: '💜', key: mek.key } 
+  }, { quoted: mek });
+    }
+  
 
 //owner react
 
