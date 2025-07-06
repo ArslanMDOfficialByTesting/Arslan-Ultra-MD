@@ -9,6 +9,8 @@ ALIVE_MSG: process.env.ALIVE_MSG || "HEY DEAR, I'm thrilled to announce that Ars
 SUDO_NB: process.env.SUDO_NB || "923237045919",
 AUTO_REACT: process.env.AUTO_REACT || "true", // Enable/disable auto reaction (true/false)
 AUTO_READ_STATUS: process.env.AUTO_READ_STATUS || "true",
+AUTO_STATUS_SEEN: process.env.AUTO_STATUS_SEEN || "true",
+AUTO_STATUS_REACT: process.env.AUTO_STATUS_REACT || "true",
 MODE: process.env.MODE || "public",
 AUTO_VOICE:"false",
 OMDB_API_KEY: "5e339fb7",
